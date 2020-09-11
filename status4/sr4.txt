@@ -1,0 +1,39 @@
+Added light sensors at both ends of car, two more states (forward motion blocked, backward motion blocked), the use of seven segment display. 
+Set the sensors to interrupt when they read below a threshold value of A.
+Design and implemented algorithm summarized below
+
+(1) When a light sensor interrupts ()
+
+Set flag that this direction is not allowed
+Set seven seg display for that direction to X
+Set the track state accordingly 
+	if the opposite direction is allowed
+		move away from collison in the opposite direction
+	else
+		nothing to be done, stay still
+Disable keyboard interrupts
+Disable button interrupts
+Clear that light sensor interrupt
+eret
+
+
+(2) When timer interrupts () 
+
+Check if any direction was blocked (flag was high)
+For each that was
+	if that sensor reads above threshold value (we moved away from the obstacle)
+		Clear flag that says this direction not allowed
+		Set seven seg display back to [] for that direction
+		Set track state to 0 (stationary)
+		Enable keyboard interrupts
+		Enable button interrupts
+	else
+		Do nothing (we haven't moved away from the obstacle enough yet)
+eret
+
+
+NOTES:
+JP2 address is actually set to JP1 address (for testing purposes), so interrupts are turned on for IRQ 11 (JP1)
+The timer used is the same timer that is used for turret aiming mechanism from before, which always interrupts at regular intervals of time.
+If at least one direction of motion is not allowed, turning is not allowed at all.
+The car/robot can be "boxed in" if both sensors read a value below the threshold, in which case all controls are disabled and nothing can be done until at least one sensor reading is above threshold value again (we can move in that direction now)

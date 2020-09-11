@@ -1,0 +1,10 @@
+Re-designed program significantly.
+Made it so less work is now done in the interrupt handler. For the most part it just updates state of the car/robot/tank.
+
+Added a new feature to the car: a turret. The state variable now holds two numbers.
+One for the motion of the tracks and another one for the motion of the turret.
+Added another motor to rotate turret, and another motor to shoot the turret (as well as the keys to control them)
+
+Added clock interrupts so that every second that the car spends stationary (track and turret off) one more led lights up until 7 are on (meaning the car can has aimed in its turret and can shoot). Any motion resets the leds to all off.
+
+Added pulse modulation to the car, so the motors for the track and the motor for the turret are not always on. 
